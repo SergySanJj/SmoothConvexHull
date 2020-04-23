@@ -49,4 +49,5 @@ class SmoothConvexApp(App):
 
 
 def main():
-    SmoothConvexApp().run()
+    ##SmoothConvexApp().run()
+    print('hi')

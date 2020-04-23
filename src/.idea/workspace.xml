@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4ed02522-d285-464d-baad-0f318291394a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/scripts/convex_hull.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/tk_start.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/point.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/point.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/point_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/point_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/__main__.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/__main__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/starter.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/starter.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
