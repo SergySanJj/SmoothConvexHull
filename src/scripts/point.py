@@ -1,12 +1,11 @@
 from math import sqrt
-
-from kivy.graphics import Color, Ellipse
+from tkinter import Canvas
 
 
 class Point:
     epsilon = 0.1
     diam = 10.
-    point_color = [1, 0, 0]
+    point_color = "red"
 
     def __init__(self, x: float, y: float):
         self.x = x
@@ -17,10 +16,10 @@ class Point:
             return self.dist(point_b=other) < self.epsilon
         return False
 
-    def draw(self, canvas):
-        with canvas:
-            Color(self.point_color[0], self.point_color[1], self.point_color[2])
-            Ellipse(pos=(self.x - self.diam / 2, self.y - self.diam / 2), size=(self.diam, self.diam))
+    def draw(self, canvas: Canvas):
+        canvas.create_oval(self.x - self.diam / 2, self.y - self.diam / 2, self.x + self.diam / 2,
+                           self.y + self.diam / 2, fill=self.point_color,
+                           width=2)
 
     def dist(self, point_b):
         return sqrt((self.x - point_b.x) ** 2 + (self.y - point_b.y) ** 2)
@@ -28,8 +27,7 @@ class Point:
     def is_touched(self, x, y):
         return self.dist(Point(x, y)) < self.diam / 2
 
-    def slope(self, other):
-        if self.y - other.y < Point.epsilon:
+    def polar_angle(self, origin):
+        if abs(self.y - origin.y) < Point.epsilon:
             return 0.
-        else:
-            return (self.x - other.x) / (self.y - other.y)
+        return -(self.x - origin.x) / (self.y - origin.y)
