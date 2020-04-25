@@ -1,6 +1,8 @@
+import math
 from tkinter import Canvas, W
 
 from scripts.point import Point
+from scripts.point_misc import edge_length
 
 
 class PointList:
@@ -92,3 +94,13 @@ class PointList:
 
     def print(self):
         print(["{" + str(p.x) + " " + str(p.y) + "}" for p in self.list])
+
+    def avg_edge_length(self):
+        avg = 0.
+        i = 0
+        while i < len(self.list) - 1:
+            avg += edge_length(self.list[i], self.list[i + 1])
+            i += 1
+
+        avg = avg / (len(self.list) - 1)
+        return avg
