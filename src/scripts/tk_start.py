@@ -51,14 +51,13 @@ class SmoothConvex(Frame):
         self.redraw()
 
     def redraw(self):
-        self.canv.create_rectangle(0, 0, self.canv.winfo_width(), self.canv.winfo_height(), fill="white")
+        self.canv.delete("all")
         centroid = self.points.centroid()
         centroid.point_color = "green"
         centroid.draw(self.canv)
 
         self.points.draw(self.canv)
         hull = self.points.convex_hull(self.canv)
-        print("hull size", ["{" + str(p.x) + " " + str(p.y) + "}" for p in hull.list])
         hull.draw_connected(self.canv)
 
 

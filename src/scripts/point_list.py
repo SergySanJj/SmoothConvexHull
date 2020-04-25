@@ -38,6 +38,12 @@ class PointList:
 
             canvas.create_line(points, fill="black")
 
+            i = 0
+            for p in self.list:
+                canvas.create_text(p.x + 10, p.y + 10, anchor=W, font="Arial",
+                                   text=str(i), fill='blue')
+                i += 1
+
     def sort(self, cmp=lambda point: point.x):
         self.list = sorted(self.list, key=cmp)
 
@@ -58,17 +64,12 @@ class PointList:
         if len(self.list) == 0:
             return hull
         center = self.centroid()
-        tmp = sorted(self.list, key=lambda point: point.polar_angle(center))
+        tmp = self.list
+        left_most = self.left_most_pos()
+        tmp[0], tmp[left_most] = tmp[left_most], tmp[0]
+        tmp = tmp[:1] + sorted(tmp[1:], key=lambda point: point.polar_angle(tmp[0]))
 
-        i = 0
-        for p in tmp:
-            canvas.create_text(p.x + 10, p.y + 10, anchor=W, font="Arial",
-                               text=str(i), fill='blue')
-            i += 1
-
-        tmp.append(tmp[0])
-
-        def cross_product_orientation(a, b, c):
+        def cross_product_orientation(a: Point, b: Point, c: Point):
             return (b.y - a.y) * \
                    (c.x - a.x) - \
                    (b.x - a.x) * \
@@ -79,15 +80,16 @@ class PointList:
                 hull.list.pop()
             hull.list.append(p)
 
-        p = tmp[1]
-        popped = False
-        while len(hull.list) > 1 and cross_product_orientation(hull.list[-2], hull.list[-1], p) >= 0:
-            hull.list.pop()
-            popped = True
-        if popped:
-            hull.list.append(p)
-
         return hull
 
+    def left_most_pos(self) -> int:
+        pos = 0
+        i = 0
+        for p in self.list:
+            if p.x < self.list[pos].x:
+                pos = i
+            i += 1
+        return pos
+
     def print(self):
-        print(self.list)
+        print(["{" + str(p.x) + " " + str(p.y) + "}" for p in self.list])
