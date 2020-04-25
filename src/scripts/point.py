@@ -1,3 +1,4 @@
+import math
 from math import sqrt
 from tkinter import Canvas
 
@@ -28,6 +29,7 @@ class Point:
         return self.dist(Point(x, y)) < self.diam / 2
 
     def polar_angle(self, origin):
-        if abs(self.y - origin.y) < Point.epsilon:
-            return 0.
-        return -(self.x - origin.x) / (self.y - origin.y)
+        dx = self.x - origin.x
+        dy = self.y - origin.y
+        th = math.atan2(dy, dx)
+        return th

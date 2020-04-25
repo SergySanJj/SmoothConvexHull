@@ -57,7 +57,7 @@ class SmoothConvex(Frame):
         centroid.draw(self.canv)
 
         self.points.draw(self.canv)
-        hull = self.points.convex_hull()
+        hull = self.points.convex_hull(self.canv)
         print("hull size", ["{" + str(p.x) + " " + str(p.y) + "}" for p in hull.list])
         hull.draw_connected(self.canv)
 

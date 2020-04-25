@@ -1,4 +1,4 @@
-from tkinter import Canvas
+from tkinter import Canvas, W
 
 from scripts.point import Point
 
@@ -53,15 +53,20 @@ class PointList:
         y = y / len(self.list)
         return Point(x, y)
 
-    def convex_hull(self):
+    def convex_hull(self, canvas: Canvas):
         hull = PointList()
         if len(self.list) == 0:
             return hull
         center = self.centroid()
         tmp = sorted(self.list, key=lambda point: point.polar_angle(center))
-        tmp.append(tmp[0])
 
-        print("sorted points", ["{" + str(p.x) + " " + str(p.y) + "}" for p in tmp])
+        i = 0
+        for p in tmp:
+            canvas.create_text(p.x + 10, p.y + 10, anchor=W, font="Arial",
+                               text=str(i), fill='blue')
+            i += 1
+
+        tmp.append(tmp[0])
 
         def cross_product_orientation(a, b, c):
             return (b.y - a.y) * \
@@ -69,13 +74,19 @@ class PointList:
                    (b.x - a.x) * \
                    (c.y - a.y)
 
-        # convex_hull is a stack of points beginning with the leftmost point.
         for p in tmp:
-            # if we turn clockwise to reach this point, pop the last point from the stack, else, append this point to it.
             while len(hull.list) > 1 and cross_product_orientation(hull.list[-2], hull.list[-1], p) >= 0:
                 hull.list.pop()
             hull.list.append(p)
-        # the stack is now a representation of the convex hull, return it.
+
+        p = tmp[1]
+        popped = False
+        while len(hull.list) > 1 and cross_product_orientation(hull.list[-2], hull.list[-1], p) >= 0:
+            hull.list.pop()
+            popped = True
+        if popped:
+            hull.list.append(p)
+
         return hull
 
     def print(self):
