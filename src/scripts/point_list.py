@@ -33,9 +33,6 @@ class PointList:
                 points.append(p.x)
                 points.append(p.y)
 
-            points.append(self.list[0].x)
-            points.append(self.list[0].y)
-
             canvas.create_line(points, fill="black")
 
             i = 0
@@ -59,7 +56,7 @@ class PointList:
         y = y / len(self.list)
         return Point(x, y)
 
-    def convex_hull(self, canvas: Canvas):
+    def convex_hull(self):
         hull = PointList()
         if len(self.list) == 0:
             return hull
@@ -79,6 +76,8 @@ class PointList:
             while len(hull.list) > 1 and cross_product_orientation(hull.list[-2], hull.list[-1], p) >= 0:
                 hull.list.pop()
             hull.list.append(p)
+
+        hull.list.append(hull.list[0])
 
         return hull
 

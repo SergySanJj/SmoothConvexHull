@@ -2,6 +2,7 @@ from tkinter import *
 
 from scripts.point import Point
 from scripts.point_list import PointList
+from scripts.bezier import *
 
 
 class SmoothConvex(Frame):
@@ -52,13 +53,19 @@ class SmoothConvex(Frame):
 
     def redraw(self):
         self.canv.delete("all")
-        centroid = self.points.centroid()
+
+
+        self.points.draw(self.canv)
+        hull = self.points.convex_hull()
+        hull.draw_connected(self.canv)
+        draw_bezier(hull, self.canv)
+
+        centroid = hull.centroid()
         centroid.point_color = "green"
         centroid.draw(self.canv)
 
-        self.points.draw(self.canv)
-        hull = self.points.convex_hull(self.canv)
-        hull.draw_connected(self.canv)
+        # Point(500, 500).draw(self.canv)
+        # bezier_cubic(Point(500, 500), Point(400, 100), Point(600, 100), Point(500, 500), self.canv, 0.001)
 
 
 def main():
