@@ -40,7 +40,7 @@ class PointList:
             center = self.centroid(include_last=False)
             i = 0
             for p in self.list[:-1]:
-                offset_weight = 30
+                offset_weight = 15
                 # offset = Point(center.x - p.x, center.y - p.y).normalize().multiply_by_constant(offset_weight)
                 prev_point = self.list[:-1][i - 1]
                 if i + 1 < len(self.list[:-1]):

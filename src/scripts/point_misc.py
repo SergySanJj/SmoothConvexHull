@@ -18,3 +18,7 @@ def add_vectors(vec1: Point, vec2: Point) -> Point:
 
 def median_vector(vec1: Point, vec2: Point) -> Point:
     return add_vectors(vec1, vec2).multiply_by_constant(0.5)
+
+
+def create_vector(start_point: Point, end_point: Point) -> Point:
+    return Point(end_point.x - start_point.x, end_point.y - start_point.y)
