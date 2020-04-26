@@ -36,6 +36,8 @@ class SmoothConvex(Frame):
 
         self.canv.bind("<Button 3>", self.on_touch_right)
 
+        self.parent.bind("<MouseWheel>", self.on_mouse_wheel)
+
         color_lab = Label(self, text="Color: ")
         color_lab.grid(row=0, column=0,
                        padx=6)
@@ -65,15 +67,29 @@ class SmoothConvex(Frame):
             self.drag_origin = Point(event.x, event.y)
         else:
             self.drag_calls += 1
+            self.drag_origin = Point(event.x, event.y)
 
     def on_touch_right(self, event):
         self.display_model.points.remove_if_touched(event.x, event.y)
         self.display_model.update_hull()
         self.display_view.update()
 
+    def on_mouse_wheel(self, event):
+        delta = event.delta
+        if delta > 0:
+            multiplier = 2
+        else:
+            multiplier = 1. / 2.
+        self.display_model.zoom_points(multiplier, Point(event.x, event.y))
+        self.display_view.update()
+
 
 def main():
     root = Tk()
-    root.geometry("900x800")
+    root.geometry("1000x900")
     app = SmoothConvex(root)
+    print("start")
+    app.display_model.spawn_random_points(0, 0, 500, 500, 100000)
+    print("updated")
+    # app.display_view.update()
     root.mainloop()

@@ -4,9 +4,10 @@ from tkinter import Canvas
 
 
 class Point:
-    epsilon = 0.1
+    epsilon = 0.0001
     diam = 10.
-    point_color = "red"
+    point_color = "black"
+    outline_color = ''
 
     def __init__(self, x: float, y: float):
         self.x = x
@@ -20,7 +21,7 @@ class Point:
     def draw(self, canvas: Canvas):
         canvas.create_oval(self.x - self.diam / 2, self.y - self.diam / 2, self.x + self.diam / 2,
                            self.y + self.diam / 2, fill=self.point_color,
-                           width=2, outline="")
+                           width=2, outline=self.outline_color)
 
     def dist(self, point_b):
         return sqrt((self.x - point_b.x) ** 2 + (self.y - point_b.y) ** 2)

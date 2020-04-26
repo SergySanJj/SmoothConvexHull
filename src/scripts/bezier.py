@@ -41,31 +41,35 @@ def bezier_cubic(p0: Point, p1: Point, p2: Point, p3: Point, canvas: Canvas, sca
 
         t += scale
 
-    canvas.create_line(draw_points, width=2, fill='violet')
+    # last segment might not be present in loop
+    draw_points.append(p3.x)
+    draw_points.append(p3.y)
+
+    canvas.create_line(draw_points, width=2, fill='darkgreen')
 
 
 def smooth_cubic(start_point: Point, end_point: Point, canvas: Canvas, median_start: Point, median_end: Point,
                  multiplier=30.):
-    # central_to_start = Point(start_point.x - center.x, start_point.y - center.y)
-    # central_to_end = Point(end_point.x - center.x, end_point.y - center.y)
-
     normal_start = orthogonal(median_start).normalize().multiply_by_constant(-multiplier)
     normal_end = orthogonal(median_end).normalize().multiply_by_constant(multiplier)
 
     smooth1 = add_vectors(start_point, normal_start)
     smooth2 = add_vectors(end_point, normal_end)
 
-    smooth1.point_color = "pink"
-    smooth2.point_color = "pink"
-    smooth1.diam = 4
-    smooth2.diam = 4
-    smooth1.draw(canvas)
-    smooth2.draw(canvas)
+    smooth1.point_color = "mediumseagreen"
+    smooth2.point_color = "mediumseagreen"
+    smooth1.outline_color = 'black'
+    smooth2.outline_color = 'black'
+    smooth1.diam = 6
+    smooth2.diam = 6
+
+    bezier_cubic(start_point, smooth1, smooth2, end_point, canvas)
 
     draw_connection(start_point, smooth1, canvas)
     draw_connection(end_point, smooth2, canvas)
 
-    bezier_cubic(start_point, smooth1, smooth2, end_point, canvas)
+    smooth1.draw(canvas)
+    smooth2.draw(canvas)
 
 
 def draw_bezier(points: PointList, canvas: Canvas):
@@ -85,7 +89,8 @@ def draw_bezier(points: PointList, canvas: Canvas):
             else:
                 next_point = points.list[1]
 
-            median_start = median_vector(Point(start_point.x - prev_point.x, start_point.y - prev_point.y).normalize(),
+            median_start = median_vector(Point(start_point.x - prev_point.x,
+                                               start_point.y - prev_point.y).normalize(),
                                          Point(start_point.x - end_point.x,
                                                start_point.y - end_point.y).normalize()).normalize()
             median_end = median_vector(Point(end_point.x - start_point.x, end_point.y - start_point.y).normalize(),
@@ -96,7 +101,7 @@ def draw_bezier(points: PointList, canvas: Canvas):
             draw_ray(end_point, median_end, canvas)
 
             smooth_cubic(start_point, end_point, canvas, median_start, median_end,
-                         edge_length(start_point, end_point)/3.)
+                         edge_length(start_point, end_point) / 3.)
             curr += 1
 
 
@@ -108,4 +113,8 @@ def draw_ray(start_point: Point, direction_vector: Point, canvas: Canvas):
 
 def draw_connection(start_point: Point, end_point: Point, canvas: Canvas):
     canvas.create_line(start_point.x, start_point.y,
-                       end_point.x, end_point.y)
+                       end_point.x, end_point.y,
+                       width=3, fill='black')
+    canvas.create_line(start_point.x, start_point.y,
+                       end_point.x, end_point.y,
+                       width=1, fill='pink')

@@ -12,10 +12,11 @@ class DisplayView:
     def update(self):
         self.canvas.delete("all")
 
-        self.display_model.points.draw(self.canvas)
         self.display_model.hull.draw_connected(self.canvas)
         draw_bezier(self.display_model.hull, self.canvas)
 
         centroid = self.display_model.hull.centroid(include_last=False)
         centroid.point_color = "green"
         centroid.draw(self.canvas)
+
+        self.display_model.points.draw(self.canvas)

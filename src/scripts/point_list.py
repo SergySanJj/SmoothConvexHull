@@ -2,7 +2,7 @@ import math
 from tkinter import Canvas, W
 
 from scripts.point import Point
-from scripts.point_misc import edge_length, median_vector
+from scripts.point_misc import edge_length, median_vector, add_vectors, create_vector
 
 
 class PointList:
@@ -35,13 +35,11 @@ class PointList:
                 points.append(p.x)
                 points.append(p.y)
 
-            canvas.create_line(points, width=3, fill="black")
+            canvas.create_line(points, width=4, fill="darkgrey")
 
-            center = self.centroid(include_last=False)
             i = 0
             for p in self.list[:-1]:
-                offset_weight = 15
-                # offset = Point(center.x - p.x, center.y - p.y).normalize().multiply_by_constant(offset_weight)
+                offset_weight = 30
                 prev_point = self.list[:-1][i - 1]
                 if i + 1 < len(self.list[:-1]):
                     next_point = self.list[:-1][i + 1]
@@ -121,3 +119,18 @@ class PointList:
 
         avg = avg / (len(self.list) - 1)
         return avg
+
+    def move_by(self, offset: Point):
+        i = 0
+        for p in self.list:
+            self.list[i] = add_vectors(p, offset)
+            i += 1
+
+    def zoom_relative(self, multiplier: float, origin: Point):
+        i=0
+        for p in self.list:
+            relative = create_vector(origin, p)
+            relative = relative.multiply_by_constant(multiplier)
+
+            self.list[i] = add_vectors(origin, relative)
+            i += 1

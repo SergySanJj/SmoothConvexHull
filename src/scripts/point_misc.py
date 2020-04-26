@@ -8,6 +8,9 @@ def edge_length(point_a: Point, point_b: Point) -> float:
 
 
 def orthogonal(vector: Point) -> Point:
+    vector_len = math.sqrt(vector.x ** 2 + vector.y ** 2)
+    if vector_len < Point.epsilon:
+        return Point(1, 1)
     return Point(vector.y / math.sqrt(vector.x ** 2 + vector.y ** 2),
                  -vector.x / math.sqrt(vector.x ** 2 + vector.y ** 2))
 
