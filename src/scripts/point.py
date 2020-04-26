@@ -33,3 +33,10 @@ class Point:
         dy = self.y - origin.y
         th = math.atan2(dy, dx)
         return th
+
+    def normalize(self):
+        vector_len = math.sqrt(self.x ** 2 + self.y ** 2)
+        return Point(self.x / vector_len, self.y / vector_len)
+
+    def multiply_by_constant(self, coefficient: float):
+        return Point(self.x * coefficient, self.y * coefficient)
