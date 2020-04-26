@@ -5,7 +5,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/bezier.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/bezier.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/point.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/point.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/point_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/point_list.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/point_misc.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/point_misc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/tk_start.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/tk_start.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

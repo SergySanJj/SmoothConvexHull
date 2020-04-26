@@ -54,13 +54,12 @@ class SmoothConvex(Frame):
     def redraw(self):
         self.canv.delete("all")
 
-
         self.points.draw(self.canv)
         hull = self.points.convex_hull()
         hull.draw_connected(self.canv)
         draw_bezier(hull, self.canv)
 
-        centroid = hull.centroid()
+        centroid = hull.centroid(include_last=False)
         centroid.point_color = "green"
         centroid.draw(self.canv)
 

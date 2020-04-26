@@ -2,7 +2,7 @@ import math
 from tkinter import Canvas, W
 
 from scripts.point import Point
-from scripts.point_misc import edge_length
+from scripts.point_misc import edge_length, median_vector
 
 
 class PointList:
@@ -35,27 +35,44 @@ class PointList:
                 points.append(p.x)
                 points.append(p.y)
 
-            canvas.create_line(points, fill="black")
+            canvas.create_line(points, width=3, fill="black")
 
+            center = self.centroid(include_last=False)
             i = 0
-            for p in self.list:
-                canvas.create_text(p.x + 10, p.y + 10, anchor=W, font="Arial",
-                                   text=str(i), fill='blue')
+            for p in self.list[:-1]:
+                offset_weight = 30
+                # offset = Point(center.x - p.x, center.y - p.y).normalize().multiply_by_constant(offset_weight)
+                prev_point = self.list[:-1][i - 1]
+                if i + 1 < len(self.list[:-1]):
+                    next_point = self.list[:-1][i + 1]
+                else:
+                    next_point = self.list[:-1][0]
+                offset = median_vector(Point(prev_point.x - p.x, prev_point.y - p.y).normalize(),
+                                       Point(next_point.x - p.x, next_point.y - p.y).normalize()) \
+                    .normalize().multiply_by_constant(offset_weight)
+                canvas.create_text(p.x + offset.x, p.y + offset.y, anchor=W, font="Arial",
+                                   text=str(i), fill='black')
                 i += 1
 
     def sort(self, cmp=lambda point: point.x):
         self.list = sorted(self.list, key=cmp)
 
-    def centroid(self) -> Point:
+    def centroid(self, include_last=True) -> Point:
         if len(self.list) == 0:
             return Point(0., 0.)
         x = 0
         y = 0
-        for p in self.list:
+        if include_last:
+            iterated_list = self.list
+        else:
+            iterated_list = self.list[:-1]
+
+        for p in iterated_list:
             x += p.x
             y += p.y
-        x = x / len(self.list)
-        y = y / len(self.list)
+        x = x / len(iterated_list)
+        y = y / len(iterated_list)
+
         return Point(x, y)
 
     def convex_hull(self):

@@ -4,7 +4,7 @@ from scripts.point import Point
 from scripts.point_list import PointList
 from tkinter import Canvas, W
 
-from scripts.point_misc import edge_length, orthogonal, add_vectors
+from scripts.point_misc import edge_length, orthogonal, add_vectors, median_vector
 
 
 def bezier_quad(p0: Point, p1: Point, p2: Point, canvas: Canvas, scale=0.01):
@@ -40,33 +40,72 @@ def bezier_cubic(p0: Point, p1: Point, p2: Point, p3: Point, canvas: Canvas, sca
         draw_points.append(y)
 
         t += scale
-    canvas.create_line(draw_points, fill='violet')
+
+    canvas.create_line(draw_points, width=2, fill='violet')
 
 
-def smooth_cubic(start_point: Point, end_point: Point, canvas: Canvas, center: Point, multiplier=30):
-    central_to_start = Point(start_point.x - center.x, start_point.y - center.y)
-    central_to_end = Point(end_point.x - center.x, end_point.y - center.y)
+def smooth_cubic(start_point: Point, end_point: Point, canvas: Canvas, median_start: Point, median_end: Point,
+                 multiplier=30.):
+    # central_to_start = Point(start_point.x - center.x, start_point.y - center.y)
+    # central_to_end = Point(end_point.x - center.x, end_point.y - center.y)
 
-    normal_start = orthogonal(central_to_start).normalize().multiply_by_constant(-multiplier)
-    normal_end = orthogonal(central_to_end).normalize().multiply_by_constant(multiplier)
+    normal_start = orthogonal(median_start).normalize().multiply_by_constant(-multiplier)
+    normal_end = orthogonal(median_end).normalize().multiply_by_constant(multiplier)
 
     smooth1 = add_vectors(start_point, normal_start)
     smooth2 = add_vectors(end_point, normal_end)
 
     smooth1.point_color = "pink"
     smooth2.point_color = "pink"
+    smooth1.diam = 4
+    smooth2.diam = 4
     smooth1.draw(canvas)
     smooth2.draw(canvas)
+
+    draw_connection(start_point, smooth1, canvas)
+    draw_connection(end_point, smooth2, canvas)
+
     bezier_cubic(start_point, smooth1, smooth2, end_point, canvas)
 
 
 def draw_bezier(points: PointList, canvas: Canvas):
-    center = points.centroid()
-    avg_len = points.avg_edge_length()
     if len(points.list) > 2:
         curr = 0
         while curr + 1 < len(points.list):
             start_point = points.list[curr]
             end_point = points.list[curr + 1]
-            smooth_cubic(start_point, end_point, canvas, center, 50 * edge_length(start_point, end_point) / avg_len)
+
+            if curr == 0:
+                prev_point = points.list[curr - 2]
+            else:
+                prev_point = points.list[curr - 1]
+
+            if curr + 2 < len(points.list):
+                next_point = points.list[curr + 2]
+            else:
+                next_point = points.list[1]
+
+            median_start = median_vector(Point(start_point.x - prev_point.x, start_point.y - prev_point.y).normalize(),
+                                         Point(start_point.x - end_point.x,
+                                               start_point.y - end_point.y).normalize()).normalize()
+            median_end = median_vector(Point(end_point.x - start_point.x, end_point.y - start_point.y).normalize(),
+                                       Point(end_point.x - next_point.x,
+                                             end_point.y - next_point.y).normalize()).normalize()
+
+            draw_ray(start_point, median_start, canvas)
+            draw_ray(end_point, median_end, canvas)
+
+            smooth_cubic(start_point, end_point, canvas, median_start, median_end,
+                         edge_length(start_point, end_point)/3.)
             curr += 1
+
+
+def draw_ray(start_point: Point, direction_vector: Point, canvas: Canvas):
+    end_point = add_vectors(start_point, direction_vector.multiply_by_constant(100))
+    canvas.create_line(start_point.x, start_point.y,
+                       end_point.x, end_point.y, fill='grey90')
+
+
+def draw_connection(start_point: Point, end_point: Point, canvas: Canvas):
+    canvas.create_line(start_point.x, start_point.y,
+                       end_point.x, end_point.y)
