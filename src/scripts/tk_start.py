@@ -7,6 +7,8 @@ from scripts.point_list import PointList
 from scripts.bezier import *
 from scripts.point_misc import create_vector
 
+from PIL import Image, ImageDraw
+
 
 class SmoothConvex(Frame):
     touch_started = False
@@ -45,6 +47,9 @@ class SmoothConvex(Frame):
         self.display_model = DisplayModel()
         self.display_view = DisplayView(self.display_model, self.canv)
 
+        spawn_button = Button(self, text="Spawn", command=self.on_spawn_button)
+        spawn_button.grid(row=0, column=1, padx=6)
+
     def on_touch_left(self, event):
         self.touch_started = True
         self.drag_origin = Point(event.x, event.y)
@@ -82,14 +87,17 @@ class SmoothConvex(Frame):
             multiplier = 1. / 2.
         self.display_model.zoom_points(multiplier, Point(event.x, event.y))
         self.display_view.update()
+        self.display_view.update()
+
+    def on_spawn_button(self):
+        self.display_model.spawn_random_points(100, 100, 800, 800, 10000)
+        self.display_view.update()
 
 
 def main():
     root = Tk()
     root.geometry("1000x900")
+    root.resizable(False, False)
     app = SmoothConvex(root)
-    print("start")
-    app.display_model.spawn_random_points(0, 0, 500, 500, 100000)
-    print("updated")
-    # app.display_view.update()
+
     root.mainloop()

@@ -1,3 +1,5 @@
+from typing import List
+
 from scripts.point import Point
 from scripts.point_list import PointList
 from scripts.point_misc import *
@@ -6,8 +8,8 @@ import random
 
 class DisplayModel:
     def __init__(self):
-        self.points = PointList()
-        self.hull = PointList()
+        self.points: PointList = PointList()
+        self.hull: PointList = PointList()
 
     def update_hull(self):
         self.hull = self.points.convex_hull()

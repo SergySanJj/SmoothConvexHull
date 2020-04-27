@@ -1,5 +1,6 @@
 import math
 from tkinter import Canvas, W
+from typing import List
 
 from scripts.point import Point
 from scripts.point_misc import edge_length, median_vector, add_vectors, create_vector
@@ -7,7 +8,7 @@ from scripts.point_misc import edge_length, median_vector, add_vectors, create_v
 
 class PointList:
     def __init__(self):
-        self.list = []
+        self.list: List[Point] = []
 
     def add(self, new_point: Point):
         self.list.append(new_point)
@@ -127,7 +128,7 @@ class PointList:
             i += 1
 
     def zoom_relative(self, multiplier: float, origin: Point):
-        i=0
+        i = 0
         for p in self.list:
             relative = create_vector(origin, p)
             relative = relative.multiply_by_constant(multiplier)
