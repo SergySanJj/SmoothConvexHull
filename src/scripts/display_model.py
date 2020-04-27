@@ -29,3 +29,7 @@ class DisplayModel:
             self.points.add(Point(x, y))
 
         self.update_hull()
+
+    def clear(self):
+        self.points = PointList()
+        self.hull = PointList()

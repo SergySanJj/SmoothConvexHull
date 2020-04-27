@@ -50,7 +50,7 @@ class PointList:
                                        Point(next_point.x - p.x, next_point.y - p.y).normalize()) \
                     .normalize().multiply_by_constant(offset_weight)
                 canvas.create_text(p.x + offset.x, p.y + offset.y, anchor=W, font="Arial",
-                                   text=str(i), fill='black')
+                                   text=str(i), fill='red')
                 i += 1
 
     def sort(self, cmp=lambda point: point.x):

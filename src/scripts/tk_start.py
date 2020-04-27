@@ -40,15 +40,18 @@ class SmoothConvex(Frame):
 
         self.parent.bind("<MouseWheel>", self.on_mouse_wheel)
 
-        color_lab = Label(self, text="Color: ")
-        color_lab.grid(row=0, column=0,
-                       padx=6)
-
         self.display_model = DisplayModel()
         self.display_view = DisplayView(self.display_model, self.canv)
 
-        spawn_button = Button(self, text="Spawn", command=self.on_spawn_button)
-        spawn_button.grid(row=0, column=1, padx=6)
+        spawn_button = Button(self, text="Spawn N points", command=self.on_spawn_button)
+        spawn_button.grid(row=0, column=1, padx=6, pady=6)
+        self.spawn_count: Entry = Entry(self, textvariable=str(100))
+        self.spawn_count.grid(row=0, column=2, padx=6, pady=6)
+        self.spawn_count.delete(0, END)
+        self.spawn_count.insert(0, str(100))
+
+        spawn_button = Button(self, text="Clear", command=self.on_clear)
+        spawn_button.grid(row=1, column=1, padx=6, pady=6)
 
     def on_touch_left(self, event):
         self.touch_started = True
@@ -90,7 +93,15 @@ class SmoothConvex(Frame):
         self.display_view.update()
 
     def on_spawn_button(self):
-        self.display_model.spawn_random_points(100, 100, 800, 800, 10000)
+        try:
+            n = int(self.spawn_count.get())
+        except ValueError:
+            n = 0
+        self.display_model.spawn_random_points(100, 100, 800, 800, n)
+        self.display_view.update()
+
+    def on_clear(self):
+        self.display_model.clear()
         self.display_view.update()
 
 

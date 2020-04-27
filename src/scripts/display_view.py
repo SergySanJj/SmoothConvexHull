@@ -15,9 +15,8 @@ class DisplayView:
         self.canvas = canvas
 
     def update(self):
+        self.canvas.delete("all")
         if len(self.display_model.points.list) < 1000:
-            self.canvas.delete("all")
-
             self.display_model.hull.draw_connected(self.canvas)
             draw_bezier(self.display_model.hull, self.canvas)
 
@@ -33,12 +32,20 @@ class DisplayView:
         image = Image.new("RGB", (1000, 900), (255, 255, 255))
         draw = ImageDraw.Draw(image)
         for p in self.display_model.points.list:
-            # draw.ellipse((p.x - 2, p.y - 2, p.x + 2, p.y + 2), width=4, fill=128)
             draw.point((p.x, p.y), fill=128)
-            draw.point((p.x, p.y - 1), fill=128)
-            draw.point((p.x, p.y + 1), fill=128)
-            draw.point((p.x - 1, p.y), fill=128)
-            draw.point((p.x + 1, p.y), fill=128)
+            draw.point((p.x, p.y - 1), fill="#000000")
+            draw.point((p.x, p.y + 1), fill="#000000")
+            draw.point((p.x - 1, p.y), fill="#000000")
+            draw.point((p.x + 1, p.y), fill="#000000")
+
+        hull_polygon = []
+        for p in self.display_model.hull.list:
+            hull_polygon.append((p.x, p.y))
+        draw.line(hull_polygon, '#D3D3D3', 3)
+
+
         photo = PhotoImage(image=image)
         self.canvas.image = photo
         self.canvas.create_image(0, 0, image=photo, anchor="nw")
+
+        draw_bezier(self.display_model.hull, self.canvas)
