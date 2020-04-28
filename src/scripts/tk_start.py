@@ -53,6 +53,26 @@ class SmoothConvex(Frame):
         spawn_button = Button(self, text="Clear", command=self.on_clear)
         spawn_button.grid(row=1, column=1, padx=6, pady=6)
 
+        blobness_label = Label(self, text="Blobness: ")
+        blobness_label.grid(row=0, column=3, padx=6, pady=6)
+
+        self.blobness = Scale(self, orient=HORIZONTAL, length=300, from_=50, to=2, tickinterval=0.1)
+        self.blobness.set(3)
+        self.blobness.grid(row=0, column=4, padx=6, pady=6)
+        self.blobness.bind("<B1-Motion>", self.on_update_blobness)
+
+        self.show_points = Checkbutton(self, text="Display dots", variable=self.display_model.show_points,
+                                       command=self.on_update_settings)
+        self.show_points.grid(row=1, column=2, padx=6, pady=6)
+
+        self.show_points = Checkbutton(self, text="Display Hull", variable=self.display_model.show_hull,
+                                       command=self.on_update_settings)
+        self.show_points.grid(row=1, column=3, padx=6, pady=6)
+
+        self.show_points = Checkbutton(self, text="Display Bezier", variable=self.display_model.show_bezier,
+                                       command=self.on_update_settings)
+        self.show_points.grid(row=1, column=4, padx=6, pady=6)
+
     def on_touch_left(self, event):
         self.touch_started = True
         self.drag_origin = Point(event.x, event.y)
@@ -102,6 +122,13 @@ class SmoothConvex(Frame):
 
     def on_clear(self):
         self.display_model.clear()
+        self.display_view.update()
+
+    def on_update_blobness(self, event):
+        self.display_model.blobness = self.blobness.get()
+        self.display_view.update()
+
+    def on_update_settings(self):
         self.display_view.update()
 
 

@@ -39,13 +39,14 @@ class PointList:
             canvas.create_line(points, width=4, fill="darkgrey")
 
             i = 0
-            for p in self.list[:-1]:
+            connections = self.list[:-1]
+            for p in connections:
                 offset_weight = 30
-                prev_point = self.list[:-1][i - 1]
-                if i + 1 < len(self.list[:-1]):
-                    next_point = self.list[:-1][i + 1]
+                prev_point = connections[i - 1]
+                if i + 1 < len(connections):
+                    next_point = connections[i + 1]
                 else:
-                    next_point = self.list[:-1][0]
+                    next_point = connections[0]
                 offset = median_vector(Point(prev_point.x - p.x, prev_point.y - p.y).normalize(),
                                        Point(next_point.x - p.x, next_point.y - p.y).normalize()) \
                     .normalize().multiply_by_constant(offset_weight)

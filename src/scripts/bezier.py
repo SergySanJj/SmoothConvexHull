@@ -72,7 +72,7 @@ def smooth_cubic(start_point: Point, end_point: Point, canvas: Canvas, median_st
     smooth2.draw(canvas)
 
 
-def draw_bezier(points: PointList, canvas: Canvas):
+def draw_bezier(points: PointList, canvas: Canvas, blobness: float = 3.):
     if len(points.list) > 2:
         curr = 0
         while curr + 1 < len(points.list):
@@ -101,7 +101,7 @@ def draw_bezier(points: PointList, canvas: Canvas):
             draw_ray(end_point, median_end, canvas)
 
             smooth_cubic(start_point, end_point, canvas, median_start, median_end,
-                         edge_length(start_point, end_point) / 3.)
+                         edge_length(start_point, end_point) / blobness)
             curr += 1
 
 

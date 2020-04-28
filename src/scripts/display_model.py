@@ -1,3 +1,4 @@
+from tkinter import BooleanVar
 from typing import List
 
 from scripts.point import Point
@@ -10,6 +11,14 @@ class DisplayModel:
     def __init__(self):
         self.points: PointList = PointList()
         self.hull: PointList = PointList()
+        self.blobness: float = 3.
+        self.show_points: BooleanVar = BooleanVar()
+        self.show_points.set(True)
+        self.show_hull: BooleanVar = BooleanVar()
+        self.show_hull.set(True)
+        self.show_bezier: BooleanVar = BooleanVar()
+        self.show_bezier.set(True)
+
 
     def update_hull(self):
         self.hull = self.points.convex_hull()

@@ -10,8 +10,8 @@ class Point:
     outline_color = ''
 
     def __init__(self, x: float, y: float):
-        self.x = x
-        self.y = y
+        self.x: float = x
+        self.y: float = y
 
     def __eq__(self, other):
         if isinstance(other, Point):
