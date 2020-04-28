@@ -1,4 +1,4 @@
-from tkinter import BooleanVar
+from tkinter import BooleanVar, StringVar
 from typing import List
 
 from scripts.point import Point
@@ -12,13 +12,13 @@ class DisplayModel:
         self.points: PointList = PointList()
         self.hull: PointList = PointList()
         self.blobness: float = 3.
+        self.current_zoom = 0
         self.show_points: BooleanVar = BooleanVar()
         self.show_points.set(True)
         self.show_hull: BooleanVar = BooleanVar()
         self.show_hull.set(True)
         self.show_bezier: BooleanVar = BooleanVar()
         self.show_bezier.set(True)
-
 
     def update_hull(self):
         self.hull = self.points.convex_hull()
@@ -28,8 +28,14 @@ class DisplayModel:
         self.hull.move_by(offset)
 
     def zoom_points(self, multiplier: float, origin: Point):
-        self.points.zoom_relative(multiplier, origin)
-        self.hull.zoom_relative(multiplier, origin)
+        if multiplier > 1:
+            change = 1
+        else:
+            change = -1
+        if -4 < self.current_zoom + change < 6:
+            self.points.zoom_relative(multiplier, origin)
+            self.hull.zoom_relative(multiplier, origin)
+            self.current_zoom += change
 
     def spawn_random_points(self, x0, y0, x1, y1, point_count: int):
         for i in range(0, point_count):

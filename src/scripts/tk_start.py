@@ -73,6 +73,16 @@ class SmoothConvex(Frame):
                                        command=self.on_update_settings)
         self.show_points.grid(row=1, column=4, padx=6, pady=6)
 
+        self.tips = Label(self, text="LMB click - add point\n\n"
+                                     "LMB drag - move scene\n\n"
+                                     "RMB click - delete point\n\n"
+                                     "Mouse wheel - zoom in and out\n")
+        self.tips.grid(row=2, column=0, padx=6, pady=6, sticky=N + W)
+
+        self.point_stats = Label(self, text="")
+        self.point_stats.grid(row=2, column=0, padx=6, pady=6, sticky=S + W)
+        self.on_update_point_counter()
+
     def on_touch_left(self, event):
         self.touch_started = True
         self.drag_origin = Point(event.x, event.y)
@@ -81,7 +91,9 @@ class SmoothConvex(Frame):
         if self.touch_started:
             self.display_model.points.add(Point(event.x, event.y))
             self.display_model.update_hull()
+
             self.display_view.update()
+            self.on_update_point_counter()
 
             self.touch_started = False
             self.drag_calls = 0
@@ -91,8 +103,10 @@ class SmoothConvex(Frame):
             self.touch_started = False
             offset = create_vector(self.drag_origin, Point(event.x, event.y))
             self.display_model.move_points(offset)
-            self.display_view.update()
             self.drag_origin = Point(event.x, event.y)
+
+            self.display_view.update()
+            self.on_update_point_counter()
         else:
             self.drag_calls += 1
             self.drag_origin = Point(event.x, event.y)
@@ -100,7 +114,9 @@ class SmoothConvex(Frame):
     def on_touch_right(self, event):
         self.display_model.points.remove_if_touched(event.x, event.y)
         self.display_model.update_hull()
+
         self.display_view.update()
+        self.on_update_point_counter()
 
     def on_mouse_wheel(self, event):
         delta = event.delta
@@ -118,11 +134,14 @@ class SmoothConvex(Frame):
         except ValueError:
             n = 0
         self.display_model.spawn_random_points(100, 100, 800, 800, n)
+
         self.display_view.update()
+        self.on_update_point_counter()
 
     def on_clear(self):
         self.display_model.clear()
         self.display_view.update()
+        self.on_update_point_counter()
 
     def on_update_blobness(self, event):
         self.display_model.blobness = self.blobness.get()
@@ -131,10 +150,18 @@ class SmoothConvex(Frame):
     def on_update_settings(self):
         self.display_view.update()
 
+    def on_update_point_counter(self):
+        total_cnt = len(self.display_model.points.list)
+        hull_cnt = len(self.display_model.hull.list) - 1
+        if hull_cnt < 0:
+            hull_cnt = 0
+        self.point_stats['text'] = "total points count: " + str(total_cnt) + "\n" + \
+                                   "hull  points count: " + str(hull_cnt)
+
 
 def main():
     root = Tk()
-    root.geometry("1000x900")
+    root.geometry("1000x800")
     root.resizable(False, False)
     app = SmoothConvex(root)
 

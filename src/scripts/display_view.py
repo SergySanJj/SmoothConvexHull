@@ -37,14 +37,15 @@ class DisplayView:
         if self.display_model.show_points.get():
             for p in self.display_model.points.list:
                 draw.point((p.x, p.y), fill=128)
-
-        hull_polygon = []
-        for p in self.display_model.hull.list:
-            hull_polygon.append((p.x, p.y))
-        draw.line(hull_polygon, '#D3D3D3', 3)
+        if self.display_model.show_hull.get():
+            hull_polygon = []
+            for p in self.display_model.hull.list:
+                hull_polygon.append((p.x, p.y))
+            draw.line(hull_polygon, '#D3D3D3', 3)
 
         photo = PhotoImage(image=image)
         self.canvas.image = photo
         self.canvas.create_image(0, 0, image=photo, anchor="nw")
 
-        draw_bezier(self.display_model.hull, self.canvas, self.display_model.blobness)
+        if self.display_model.show_bezier.get():
+            draw_bezier(self.display_model.hull, self.canvas, self.display_model.blobness)
