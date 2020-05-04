@@ -1,6 +1,6 @@
 import math
 
-from scripts.point import Point
+from .point import Point
 
 
 def edge_length(point_a: Point, point_b: Point) -> float:

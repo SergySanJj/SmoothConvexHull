@@ -1,9 +1,8 @@
-import math
 from tkinter import Canvas, W
 from typing import List
 
-from scripts.point import Point
-from scripts.point_misc import edge_length, median_vector, add_vectors, create_vector
+from .point import Point
+from .point_misc import edge_length, median_vector, add_vectors, create_vector
 
 
 class PointList:

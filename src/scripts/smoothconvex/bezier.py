@@ -1,10 +1,10 @@
 import math
 
-from scripts.point import Point
-from scripts.point_list import PointList
+from .point import Point
+from .point_list import PointList
 from tkinter import Canvas, W
 
-from scripts.point_misc import edge_length, orthogonal, add_vectors, median_vector
+from .point_misc import edge_length, orthogonal, add_vectors, median_vector
 
 
 def bezier_quad(p0: Point, p1: Point, p2: Point, canvas: Canvas, scale=0.01):
@@ -72,7 +72,7 @@ def smooth_cubic(start_point: Point, end_point: Point, canvas: Canvas, median_st
     smooth2.draw(canvas)
 
 
-def draw_bezier(points: PointList, canvas: Canvas, blobness: float = 3.):
+def draw_bezier(points: PointList, canvas: Canvas, closeness: float = 3.):
     if len(points.list) > 2:
         curr = 0
         while curr + 1 < len(points.list):
@@ -101,7 +101,7 @@ def draw_bezier(points: PointList, canvas: Canvas, blobness: float = 3.):
             draw_ray(end_point, median_end, canvas)
 
             smooth_cubic(start_point, end_point, canvas, median_start, median_end,
-                         edge_length(start_point, end_point) / blobness)
+                         edge_length(start_point, end_point) / closeness)
             curr += 1
 
 

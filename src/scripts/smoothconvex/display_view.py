@@ -1,12 +1,11 @@
 from tkinter import Canvas
-from typing import List
 
 from PIL import Image, ImageDraw
 from PIL.ImageTk import PhotoImage
 
-from scripts.bezier import draw_bezier
-from scripts.display_model import DisplayModel
-from scripts.point import Point
+from .bezier import draw_bezier
+from .display_model import DisplayModel
+
 
 
 class DisplayView:
@@ -20,7 +19,7 @@ class DisplayView:
             if self.display_model.show_hull.get():
                 self.display_model.hull.draw_connected(self.canvas)
             if self.display_model.show_bezier.get():
-                draw_bezier(self.display_model.hull, self.canvas, self.display_model.blobness)
+                draw_bezier(self.display_model.hull, self.canvas, self.display_model.closeness)
 
             centroid = self.display_model.hull.centroid(include_last=False)
             centroid.point_color = "green"
@@ -48,4 +47,4 @@ class DisplayView:
         self.canvas.create_image(0, 0, image=photo, anchor="nw")
 
         if self.display_model.show_bezier.get():
-            draw_bezier(self.display_model.hull, self.canvas, self.display_model.blobness)
+            draw_bezier(self.display_model.hull, self.canvas, self.display_model.closeness)

@@ -1,13 +1,9 @@
 from tkinter import *
 
-from scripts.display_model import DisplayModel
-from scripts.display_view import DisplayView
-from scripts.point import Point
-from scripts.point_list import PointList
-from scripts.bezier import *
-from scripts.point_misc import create_vector
-
-from PIL import Image, ImageDraw
+from scripts.smoothconvex.display_model import DisplayModel
+from scripts.smoothconvex.display_view import DisplayView
+from scripts.smoothconvex.bezier import *
+from scripts.smoothconvex.point_misc import create_vector
 
 
 class SmoothConvex(Frame):
@@ -53,13 +49,13 @@ class SmoothConvex(Frame):
         spawn_button = Button(self, text="Clear", command=self.on_clear)
         spawn_button.grid(row=1, column=1, padx=6, pady=6)
 
-        blobness_label = Label(self, text="Blobness: ")
+        blobness_label = Label(self, text="Closeness: ")
         blobness_label.grid(row=0, column=3, padx=6, pady=6)
 
-        self.blobness = Scale(self, orient=HORIZONTAL, length=300, from_=50, to=2, tickinterval=0.1)
-        self.blobness.set(3)
-        self.blobness.grid(row=0, column=4, padx=6, pady=6)
-        self.blobness.bind("<B1-Motion>", self.on_update_blobness)
+        self.closeness = Scale(self, orient=HORIZONTAL, length=300, from_=2, to=50, tickinterval=0.1)
+        self.closeness.set(3)
+        self.closeness.grid(row=0, column=4, padx=6, pady=6)
+        self.closeness.bind("<B1-Motion>", self.on_update_blobness)
 
         self.show_points = Checkbutton(self, text="Display dots", variable=self.display_model.show_points,
                                        command=self.on_update_settings)
@@ -144,7 +140,7 @@ class SmoothConvex(Frame):
         self.on_update_point_counter()
 
     def on_update_blobness(self, event):
-        self.display_model.blobness = self.blobness.get()
+        self.display_model.closeness = self.closeness.get()
         self.display_view.update()
 
     def on_update_settings(self):

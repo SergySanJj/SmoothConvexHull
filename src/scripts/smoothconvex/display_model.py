@@ -1,9 +1,7 @@
-from tkinter import BooleanVar, StringVar
-from typing import List
+from tkinter import BooleanVar
 
-from scripts.point import Point
-from scripts.point_list import PointList
-from scripts.point_misc import *
+from .point_list import PointList
+from .point_misc import *
 import random
 
 
@@ -11,7 +9,7 @@ class DisplayModel:
     def __init__(self):
         self.points: PointList = PointList()
         self.hull: PointList = PointList()
-        self.blobness: float = 3.
+        self.closeness: float = 3.
         self.current_zoom = 0
         self.show_points: BooleanVar = BooleanVar()
         self.show_points.set(True)
