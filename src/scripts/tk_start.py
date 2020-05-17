@@ -1,9 +1,9 @@
 from tkinter import *
 
-from scripts.smoothconvex.display_model import DisplayModel
-from scripts.smoothconvex.display_view import DisplayView
-from scripts.smoothconvex.bezier import *
-from scripts.smoothconvex.point_misc import create_vector
+from src.scripts.smoothconvex.display_model import DisplayModel
+from src.scripts.smoothconvex.display_view import DisplayView
+from src.scripts.smoothconvex.bezier import *
+from src.scripts.smoothconvex.point_misc import create_vector
 
 
 class SmoothConvex(Frame):
